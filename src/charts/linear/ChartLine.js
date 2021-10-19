@@ -1,41 +1,49 @@
 import React, { useContext } from 'react';
-import Animated, {useAnimatedProps} from 'react-native-reanimated';
-import {Svg, Line} from 'react-native-svg'
+import Animated, { useAnimatedProps } from 'react-native-reanimated';
+import { Svg, Line } from 'react-native-svg';
 import ChartContext from '../../helpers/ChartContext';
 import withReanimatedFallback from '../../helpers/withReanimatedFallback';
 
-const AnimatedLine = Animated.createAnimatedComponent(Line)
+const AnimatedLine = Animated.createAnimatedComponent(Line);
 
-function ChartLine({ color, thickness = 2, height, ...props }) {
-  const { lineStyle } = useContext(ChartContext);
+function ChartLineFactory(style) {
+  const isVertical = style == 'vertical';
+  return function ChartLine({ color, thickness = 2, length, ...props }) {
+    const { lineStyle, zeroLineStyle } = useContext(ChartContext);
 
-  const animatedLineProps = useAnimatedProps(() => ({
-    x1: 0,
-    y1: 0,
-    x2: thickness,
-    y2: height + 20,
-  }))
+    const animatedLineProps = useAnimatedProps(() => ({
+      x1: 0,
+      y1: 0,
+      x2: isVertical ? thickness : length,
+      y2: isVertical ? length + 20 : thickness,
+    }));
 
-  return (
-    <Animated.View
-      {...props}
-      pointerEvents="none"
-      style={[
-        lineStyle,
-        {
-          height: height + 20,
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          width: thickness,
-        },
-      ]}
-    >
-      <Svg height={height + 20} width={thickness}>
-        <AnimatedLine animatedProps={animatedLineProps} stroke={color} strokeWidth={thickness} strokeDasharray={10} />
-      </Svg>
-    </Animated.View>
-  );
+    return (
+      <Animated.View
+        pointerEvents='none'
+        style={[
+          isVertical ? lineStyle : zeroLineStyle,
+          {
+            height: isVertical ? length + 20 : thickness,
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            width: isVertical ? thickness : length,
+          },
+        ]}>
+        <Svg height={isVertical ? length + 20 : thickness} width={isVertical ? thickness : length}>
+          <AnimatedLine
+            animatedProps={animatedLineProps}
+            stroke={color}
+            strokeWidth={thickness}
+            strokeDasharray={10}
+            {...props}
+          />
+        </Svg>
+      </Animated.View>
+    );
+  };
 }
 
-export default withReanimatedFallback(ChartLine);
+export const ChartLine = withReanimatedFallback(ChartLineFactory('vertical'));
+export const ChartZeroLine = withReanimatedFallback(ChartLineFactory('horizontal'));
