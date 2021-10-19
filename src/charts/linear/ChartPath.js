@@ -1,9 +1,9 @@
 import React, {
-  createContext, 
-  useContext, 
-  useEffect, 
-  useRef, 
-  useState 
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
 } from 'react';
 import { Platform } from 'react-native';
 import { LongPressGestureHandler } from 'react-native-gesture-handler';
@@ -20,15 +20,15 @@ import Animated, {
 import { Path, Svg } from 'react-native-svg';
 
 import ChartContext, {
-  useGenerateValues as generateValues
+  useGenerateValues as generateValues,
 } from '../../helpers/ChartContext';
 import { findYExtremes } from '../../helpers/extremesHelpers';
 import { svgBezierPath } from '../../smoothing/smoothSVG';
 
 function impactHeavy() {
   'worklet';
-  (runOnJS 
-    ? runOnJS(ReactNativeHapticFeedback.trigger) 
+  (runOnJS
+    ? runOnJS(ReactNativeHapticFeedback.trigger)
     : ReactNativeHapticFeedback.trigger)('impactHeavy');
 }
 
@@ -89,9 +89,9 @@ const parse = (data, yRange) => {
 };
 
 function setoriginalXYAccordingToPosition(
-  originalX, 
-  originalY, 
-  position, 
+  originalX,
+  originalY,
+  position,
   data
 ) {
   'worklet';
@@ -114,8 +114,8 @@ function setoriginalXYAccordingToPosition(
     return;
   }
   originalX.value = data.value[idx].originalX.toString();
-  originalY.value = data.value[idx].originalY 
-    ? data.value[idx].originalY.toString() 
+  originalY.value = data.value[idx].originalY
+    ? data.value[idx].originalY.toString()
     : 'undefined';
 }
 
@@ -273,7 +273,7 @@ export default function ChartPathProvider({
       }
       if (!isStarted.value) {
         dotScale.value = withSpring(
-          1, 
+          1,
           combineConfigs(springDefaultConfig, springConfig)
         );
         pathOpacity.value = withTiming(
@@ -288,8 +288,8 @@ export default function ChartPathProvider({
       isStarted.value = true;
 
       const eventX = positionXWithMargin(
-        event.x, 
-        hitSlopValue.value, 
+        event.x,
+        hitSlopValue.value,
         layoutSize.value.width
       );
 
@@ -308,20 +308,20 @@ export default function ChartPathProvider({
       if (
         ss.value === 'bezier' &&
         currData.value.length > 30 &&
-        eventX / layoutSize.value.width >= 
+        eventX / layoutSize.value.width >=
           currData.value[currData.value.length - 2].x
       ) {
         const prevLastY = currData.value[currData.value.length - 2].y;
         const prevLastX = currData.value[currData.value.length - 2].x;
         const lastY = currData.value[currData.value.length - 1].y;
         const lastX = currData.value[currData.value.length - 1].x;
-        const progress = 
+        const progress =
           (eventX / layoutSize.value.width - prevLastX) / (lastX - prevLastX);
-        positionY.value = 
-          (prevLastY + progress * (lastY - prevLastY)) * 
+        positionY.value =
+          (prevLastY + progress * (lastY - prevLastY)) *
           layoutSize.value.height;
       } else if (idx === 0) {
-        positionY.value = 
+        positionY.value =
           getValue(currData, idx, ss).y * layoutSize.value.height;
       } else {
         // prev + diff over X
@@ -329,7 +329,7 @@ export default function ChartPathProvider({
           (getValue(currData, idx - 1, ss).y +
             (getValue(currData, idx, ss).y -
               getValue(currData, idx - 1, ss).y) *
-              ((eventX / layoutSize.value.width - 
+              ((eventX / layoutSize.value.width -
                 getValue(currData, idx - 1, ss).x) /
                 (getValue(currData, idx, ss).x -
                   getValue(currData, idx - 1, ss).x))) *
@@ -350,7 +350,7 @@ export default function ChartPathProvider({
       originalX.value = '';
       originalY.value = '';
       dotScale.value = withSpring(
-        0, 
+        0,
         combineConfigs(springDefaultConfig, springConfig)
       );
       if (android) {
@@ -368,7 +368,7 @@ export default function ChartPathProvider({
       originalX.value = '';
       originalY.value = '';
       dotScale.value = withSpring(
-        0, 
+        0,
         combineConfigs(springDefaultConfig, springConfig)
       );
       if (android) {
@@ -390,7 +390,7 @@ export default function ChartPathProvider({
       originalX.value = '';
       originalY.value = '';
       dotScale.value = withSpring(
-        0, 
+        0,
         combineConfigs(springDefaultConfig, springConfig)
       );
       if (android) {
@@ -411,7 +411,7 @@ export default function ChartPathProvider({
       }
       if (!isStarted.value) {
         dotScale.value = withSpring(
-          1, 
+          1,
           combineConfigs(springDefaultConfig, springConfig)
         );
         pathOpacity.value = withTiming(
@@ -426,8 +426,8 @@ export default function ChartPathProvider({
       isStarted.value = true;
 
       const eventX = positionXWithMargin(
-        event.x, 
-        hitSlopValue.value, 
+        event.x,
+        hitSlopValue.value,
         layoutSize.value.width
       );
 
@@ -447,30 +447,30 @@ export default function ChartPathProvider({
       if (
         ss.value === 'bezier' &&
         currData.value.length > 30 &&
-        eventX / layoutSize.value.width >= 
+        eventX / layoutSize.value.width >=
           currData.value[currData.value.length - 2].x
       ) {
         const prevLastY = currData.value[currData.value.length - 2].y;
         const prevLastX = currData.value[currData.value.length - 2].x;
         const lastY = currData.value[currData.value.length - 1].y;
         const lastX = currData.value[currData.value.length - 1].x;
-        const progress = 
+        const progress =
         (eventX / layoutSize.value.width - prevLastX) / (lastX - prevLastX);
         positionY.value =
-          (prevLastY + progress * (lastY - prevLastY)) * 
+          (prevLastY + progress * (lastY - prevLastY)) *
           layoutSize.value.height;
       } else if (idx === 0) {
-        positionY.value = 
+        positionY.value =
           getValue(currData, idx, ss).y * layoutSize.value.height;
       } else {
         // prev + diff over X
         positionY.value =
           (getValue(currData, idx - 1, ss).y +
-            (getValue(currData, idx, ss).y - 
+            (getValue(currData, idx, ss).y -
               getValue(currData, idx - 1, ss).y) *
-              ((eventX / layoutSize.value.width - 
+              ((eventX / layoutSize.value.width -
                 getValue(currData, idx - 1, ss).x) /
-                (getValue(currData, idx, ss).x - 
+                (getValue(currData, idx, ss).x -
                   getValue(currData, idx - 1, ss).x))) *
           layoutSize.value.height;
       }
@@ -565,9 +565,9 @@ function ChartPath({
     const strategy = smoothingStrategy.value;
     if (progress.value !== 1) {
       const numOfPoints = Math.round(
-        fromValue.length + 
-          (toValue.length - fromValue.length) * 
-            Math.min(progress.value, 0.5) * 
+        fromValue.length +
+          (toValue.length - fromValue.length) *
+            Math.min(progress.value, 0.5) *
             2,
       );
       if (fromValue.length !== numOfPoints) {
@@ -593,7 +593,7 @@ function ChartPath({
         if (prevSmoothing.value > currSmoothing.value) {
           smoothing =
             prevSmoothing.value +
-            Math.min(progress.value * 5, 1) * 
+            Math.min(progress.value * 5, 1) *
               (currSmoothing.value - prevSmoothing.value);
         } else {
           smoothing =
@@ -663,7 +663,7 @@ function ChartPath({
       d: path.value,
       strokeWidth:
         pathOpacity.value *
-          (Number(strokeWidthValue.value) - 
+          (Number(strokeWidthValue.value) -
             Number(selectedStrokeWidthValue.value)) +
         Number(selectedStrokeWidthValue.value),
     };
