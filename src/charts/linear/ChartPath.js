@@ -727,7 +727,7 @@ export function SvgComponent() {
           viewBox={`0 0 ${width} ${height}`}
           width={width}
         >
-          <AnimatedPath 
+          <AnimatedPath
             animatedProps={animatedProps}
             {...props}
             style={[style, animatedStyle]}
