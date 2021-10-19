@@ -15,7 +15,7 @@ export default function ChartPathProvider({ data: providedData, children }) {
         { scale: values.dotScale.value },
       ],
     }),
-    [],
+    []
   );
 
   const lineStyle = useAnimatedStyle(
@@ -23,7 +23,7 @@ export default function ChartPathProvider({ data: providedData, children }) {
       opacity: values.dotScale.value,
       transform: [{ translateX: values.positionX.value }],
     }),
-    [],
+    []
   );
   
   const zeroLineStyle = useAnimatedStyle(() => {
@@ -45,8 +45,12 @@ export default function ChartPathProvider({ data: providedData, children }) {
       proceededData,
       setContextValue,
     }),
-    [dotStyle, lineStyle, zeroLineStyle, values, contextReanimatedValue, providedData, proceededData],
+    [dotStyle, lineStyle, zeroLineStyle, values, contextReanimatedValue, providedData, proceededData]
   );
 
-  return <ChartContext.Provider value={contextValue}>{children}</ChartContext.Provider>;
+  return (
+    <ChartContext.Provider value={contextValue}>
+      {children}
+    </ChartContext.Provider>
+  );
 }
