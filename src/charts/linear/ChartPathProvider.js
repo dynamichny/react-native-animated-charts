@@ -18,7 +18,7 @@ export default function ChartPathProvider({ data: providedData, children }) {
     []
   );
 
-  const lineStyle = useAnimatedStyle(
+  const currentPositionVerticalLineStyle = useAnimatedStyle(
     () => ({
       opacity: values.dotScale.value,
       transform: [{ translateX: values.positionX.value }],
@@ -26,7 +26,7 @@ export default function ChartPathProvider({ data: providedData, children }) {
     []
   );
   
-  const zeroLineStyle = useAnimatedStyle(() => {
+  const openingPositionHorizontalLineStyle = useAnimatedStyle(() => {
     return ({
       opacity: proceededData == null ? 0 : 1,
       transform: [{ translateY: withTiming(proceededData?.value?.[0].y * values?.layoutSize?.value?.height + 10 || 0)  }], 
@@ -37,15 +37,15 @@ export default function ChartPathProvider({ data: providedData, children }) {
   const contextValue = useMemo(
     () => ({
       dotStyle,
-      lineStyle,
-      zeroLineStyle,
+      currentPositionVerticalLineStyle,
+      openingPositionHorizontalLineStyle,
       ...values,
       ...contextReanimatedValue,
       providedData,
       proceededData,
       setContextValue,
     }),
-    [dotStyle, lineStyle, zeroLineStyle, values, contextReanimatedValue, providedData, proceededData]
+    [dotStyle, currentPositionVerticalLineStyle, openingPositionHorizontalLineStyle, values, contextReanimatedValue, providedData, proceededData]
   );
 
   return (
