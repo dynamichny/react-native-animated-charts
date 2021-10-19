@@ -455,7 +455,7 @@ export default function ChartPathProvider({
         const lastY = currData.value[currData.value.length - 1].y;
         const lastX = currData.value[currData.value.length - 1].x;
         const progress =
-        (eventX / layoutSize.value.width - prevLastX) / (lastX - prevLastX);
+          (eventX / layoutSize.value.width - prevLastX) / (lastX - prevLastX);
         positionY.value =
           (prevLastY + progress * (lastY - prevLastY)) *
           layoutSize.value.height;
@@ -568,7 +568,7 @@ function ChartPath({
         fromValue.length +
           (toValue.length - fromValue.length) *
             Math.min(progress.value, 0.5) *
-            2,
+            2
       );
       if (fromValue.length !== numOfPoints) {
         const mappedFrom = [];
@@ -727,7 +727,11 @@ export function SvgComponent() {
           viewBox={`0 0 ${width} ${height}`}
           width={width}
         >
-          <AnimatedPath animatedProps={animatedProps} {...props} style={[style, animatedStyle]} />
+          <AnimatedPath 
+            animatedProps={animatedProps}
+            {...props}
+            style={[style, animatedStyle]}
+          />
         </Svg>
       </Animated.View>
     </LongPressGestureHandler>
