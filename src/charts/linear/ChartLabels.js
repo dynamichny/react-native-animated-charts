@@ -12,7 +12,6 @@ const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 function ChartLabelFactory(style) {
   return function ChartLabel({ format, ...props }) {
     const { [style]: val = 0 } = useContext(ChartContext);
-    
     const formattedValue = useDerivedValue(() => {
       return format ? format(val.value) : val.value;
     }, []);
