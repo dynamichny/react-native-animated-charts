@@ -1,11 +1,15 @@
 import React, { useMemo, useState } from 'react';
-import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 import ChartContext, { useGenerateValues } from '../../helpers/ChartContext';
 
 export default function ChartPathProvider({ data: providedData, children }) {
   const values = useGenerateValues();
-  const proceededData = useSharedValue(null)
+  const proceededData = useSharedValue(null);
   const dotStyle = useAnimatedStyle(
     () => ({
       opacity: values.dotScale.value,
@@ -25,13 +29,20 @@ export default function ChartPathProvider({ data: providedData, children }) {
     }),
     []
   );
-  
+
   const openingPositionHorizontalLineStyle = useAnimatedStyle(() => {
-    return ({
+    return {
       opacity: proceededData == null ? 0 : 1,
-      transform: [{ translateY: withTiming(proceededData?.value?.[0].y * values?.layoutSize?.value?.height + 10 || 0)  }], 
-    })
-  }, [proceededData])
+      transform: [
+        {
+          translateY: withTiming(
+            proceededData?.value?.[0].y * values?.layoutSize?.value?.height +
+              10 || 0
+          ),
+        },
+      ],
+    };
+  }, [proceededData]);
 
   const [contextReanimatedValue, setContextValue] = useState({});
   const contextValue = useMemo(
@@ -45,7 +56,15 @@ export default function ChartPathProvider({ data: providedData, children }) {
       proceededData,
       setContextValue,
     }),
-    [dotStyle, currentPositionVerticalLineStyle, openingPositionHorizontalLineStyle, values, contextReanimatedValue, providedData, proceededData]
+    [
+      dotStyle,
+      currentPositionVerticalLineStyle,
+      openingPositionHorizontalLineStyle,
+      values,
+      contextReanimatedValue,
+      providedData,
+      proceededData,
+    ]
   );
 
   return (
